@@ -24,12 +24,12 @@ pip install -r requirements.txt
 ## 🔧 Uso
 Para ejecutar el script, usa el siguiente comando:
 ```bash
-python wp_plugin_scanner.py -u <url_objetivo> -w <ruta_wordlist>
+python wp_plugin_scanner.py -u <url_objetivo> -w <ruta_wordlist> -t <hilos>
 ```
 
 ### Ejemplo
 ```bash
-python wp_plugin_scanner.py -u http://example.com -w plugins.txt
+python wp_plugin_scanner.py -u http://example.com -w plugins.txt -t 20
 ```
 
 ## 📝 Licencia
