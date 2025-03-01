@@ -32,8 +32,5 @@ python wp_plugin_scanner.py -u <url_objetivo> -w <ruta_wordlist>
 python wp_plugin_scanner.py -u http://example.com -w plugins.txt
 ```
 
-## 🛠️ Contribución
-Si deseas contribuir a este proyecto, por favor abre un pull request con las mejoras o correcciones. 💡
-
 ## 📝 Licencia
 Este proyecto está licenciado bajo la [Licencia](LICENSE) MIT. 🖤
