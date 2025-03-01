@@ -36,9 +36,4 @@ python wp_plugin_scanner.py -u http://example.com -w plugins.txt
 Si deseas contribuir a este proyecto, por favor abre un pull request con las mejoras o correcciones. 💡
 
 ## 📝 Licencia
-Este proyecto está licenciado bajo la Licencia MIT. 🖤
-
-## 🎨 Decoración
-Para más detalles, consulta la documentación o si tienes dudas, no dudes en abrir un issue. 🐞
-
-¡Gracias por usar el escáner de plugins de WordPress! 🌟
+Este proyecto está licenciado bajo la [Licencia](LICENSE) MIT. 🖤
