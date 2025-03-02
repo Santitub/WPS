@@ -21,7 +21,6 @@ BANNER = f"""{Fore.CYAN}{Style.BRIGHT}
   WordPress Plugins Scanner
 {Style.RESET_ALL}"""
 
-# Control de ejecución
 shutdown = False
 
 def handle_sigint(signal, frame):
@@ -32,7 +31,7 @@ def handle_sigint(signal, frame):
         sys.exit(1)
 
 def check_plugin(target_url, plugin, timeout=15):
-    if shutdown:  # <-- Verificación inmediata al inicio
+    if shutdown:
         return (None, None, None)
     
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
@@ -52,7 +51,7 @@ def check_plugin(target_url, plugin, timeout=15):
             return ("possible", plugin, url)
             
     except requests.exceptions.RequestException:
-        return (None, None, None)  # <-- Ignorar errores durante cierre
+        return (None, None, None)
     
     return (None, None, None)
 
@@ -83,14 +82,21 @@ def main():
     total_plugins = len(plugins)
     found = []
     possible = []
-    errors = {}
 
     try:
         with ThreadPoolExecutor(max_workers=args.threads) as executor:
             futures = {executor.submit(check_plugin, args.url, plugin, args.timeout): plugin for plugin in plugins}
             
-            with tqdm(total=total_plugins, desc="Progreso", unit="plugin", dynamic_ncols=True,
-                     bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}{postfix}]") as pbar:
+            # Barra de progreso modificada
+            with tqdm(
+                total=total_plugins, 
+                desc="Progreso", 
+                unit="plugin", 
+                position=0,
+                leave=True,
+                dynamic_ncols=True,
+                bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}{postfix}]"
+            ) as pbar:
                 try:
                     for future in as_completed(futures):
                         if shutdown:
@@ -102,10 +108,10 @@ def main():
                         
                         if result_type == "found":
                             found.append(plugin)
-                            tqdm.write(f"{Fore.GREEN}[+]{Style.RESET_ALL} Encontrado: {Fore.CYAN}{plugin}{Style.RESET_ALL} ({extra})")
+                            tqdm.write(f"\n{Fore.GREEN}[+]{Style.RESET_ALL} Encontrado: {Fore.CYAN}{plugin}{Style.RESET_ALL} ({extra})")
                         elif result_type == "possible":
                             possible.append(plugin)
-                            tqdm.write(f"{Fore.YELLOW}[!]{Style.RESET_ALL} Posible (403): {plugin}")
+                            tqdm.write(f"\n{Fore.YELLOW}[!]{Style.RESET_ALL} Posible (403): {plugin}")
                         
                         pbar.update(1)
                 except KeyboardInterrupt:
